@@ -1,0 +1,8 @@
+EXP_DIR: nabirds
+TRAIN:
+  SNAPSHOT_ITERS: 20000
+PRCNN:
+  PHRASE: retrain
+  WEAK_DIR: /DB/rhome/zxu/workspace/fast-rcnn/fast-rcnn/output/nabirds/nabirds_train/vgg16_fast_rcnn_iter_40000_svm
+  NOISE_REMOVE: False
+  WITH_ORIGINAL: False

@@ -1,0 +1,68 @@
+'''  
+Created on 09 Dec 2015  
+Modified on 30 Dec 2015  
+  
+@author: zxu  
+'''  
+  
+How to run:  
+(1.1) Learn features on the CUB dataset using 201-d classification net  
+-- experiments/scripts/cub_train_feature_vgg16.sh {partid} {gpuid}  
+(1.2) Train part detectors based on the learned features using SVMs
+-- experiments/scripts/cub_svm_vgg16.sh {partid} {gpuid}  
+(1.3) Test part detectors
+-- experiments/scripts/cub_detector_test_vgg16.sh {partid} {gpuid}
+(1.4) Train part-based r-cnn classifiers and get noise removal results
+-- experiments/scripts/cub_prcnn_vgg16.sh {gpuid}  
+  
+(2.1) Re-train features on cub strong+weak  
+-- experiments/scripts/cub_retrain_feature_vgg16.sh {partid} {gpuid}  
+(baseline)-- experiments/scripts/cub_retrain_feature_nodenoise_vgg.sh {partid} {gpuid}  
+(2.2) Re-train part detectors based on the re-trained features using SVMs  
+-- experiments/scripts/cub_retrain_svm_vgg16.sh {partid} {gpuid} 
+(2.3) Re-detect parts  
+-- experiments/scripts/cub_retrain_detector_test_vgg16.sh {partid} {gpuid}  
+(2.4) Re-train part-based R-CNN classifiers
+-- experiments/scripts/cub_retrain_prcnn_vgg16.sh {gpuid}  
+  
+
+Baseline 1:  
+(2.1') Re-train features without noise removal  
+-- experiments/scripts/baseline_nodenoise_retrain_feature_vgg16.sh {partid} {gpuid}  
+
+
+Baseline 2:
+(2.2') Without re-training detectors, directly goes to (2.4)
+-- experiments/scripts/baseline_oridetect_retrain_prcnn_vgg16.sh {gpuid} 
+
+Baseline 3:  
+(2.2') Without using weak samples for training SVMs after re-training features
+-- experiments/scripts/baseline_oridetect_oridata_retrain_prcnn_vgg16.sh {gpuid} 
+  
+  
+NABIRDS:  
+(1.3') Test part detectors  
+-- experiments/scripts/nabirds_detector_test_vgg16.sh {partid} {gpuid}  
+(2.1') Re-train features on nabirds with detection results  
+-- experiments/scripts/nabirds_retrain_feature_vgg16.sh {partid} {gpuid}
+
+This script is used to generate Part-based R-CNN classification results on the CUB-200-2011 dataset.  
+  
+----Local directories:  
+CUB-200-2011 dataset (200 bird species, roughly 30 images per category): /DB/rhome/zxu/Datasets/CUB_200_2011  
+Internet crawled weakly supervised images for the dataset (we use roughly 100 per category): /DB/rhome/zxu/Datasets/CUB_add  
+    Note that we don't use all the images in this directory, the image list in use in our experiment is described in weakNames.txt  
+birdsnap dataset (more bird species, used for testing in our experiment): /DB/rhome/zxu/Datasets/birdsnap  
+  
+----Flowchart of the proposed algorithm  
+Should follow the line of: here in the form of {purpose (code directory)}  
+   generating imdb (test/datasets) -> run selective search (maybe somewhere by matlab, but I have stored results in data/selective_search_data) -> train CNN (something like "test/cub_default_vgg16.sh", I can't remember clearly) -> train SVM hard-negative mining (test/train_svms_cub_detector.py) -> perform detection on weakly supervised dataset (test/test_weak.py)  
+  
+----cached files  
+data/cache: roidb and selective search results in pickle format  
+output/default: trained CNN caffemodel files (iter_40000) and files after performing hard negtive mining SVMs (iter_40000_svm).  
+output/svm: detection results on the testing set and weak (Internet images) set.  
+  
+  
+For now, the file "test/test_weak.py" is the demo file where you can find the detection results. If you want to run the batch mode for generating detection results on the whole dataset instead of viewing results on each single image, change "test/fast_rcnn/test.py" (line340-341 to "canSkip=True  isshow=False".  
+

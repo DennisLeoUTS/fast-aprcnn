@@ -1,0 +1,5 @@
+EXP_DIR: retrain
+
+PRCNN:
+  PHRASE: retrain
+  WEAK_DIR: output/svm/cub_weak/vgg16_fast_rcnn_iter_40000_svm

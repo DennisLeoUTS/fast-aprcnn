@@ -1,0 +1,5 @@
+EXP_DIR: baseline_oridetect_oridata
+
+PRCNN:
+  PHRASE: retrain
+  WITH_ORIGINAL: False

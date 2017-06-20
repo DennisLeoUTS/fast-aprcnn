@@ -1,0 +1,6 @@
+EXP_DIR: nabirds
+
+PRCNN:
+  PHRASE: retrain
+  NOISE_REMOVE: False
+  WITH_ORIGINAL: False

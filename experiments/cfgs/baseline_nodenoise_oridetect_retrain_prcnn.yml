@@ -1,0 +1,5 @@
+EXP_DIR: retrain_nodenoise
+
+PRCNN:
+  PHRASE: retrain
+  NOISE_REMOVE: False

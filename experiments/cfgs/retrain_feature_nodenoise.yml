@@ -1,0 +1,12 @@
+EXP_DIR: retrain_nodenoise
+TRAIN:
+  # don't use flipped examples when training SVMs for two reasons:
+  # 1) R-CNN didn't
+  # 2) I've tried and it doesn't help, yet makes SVM training take 2x longer
+  USE_FLIPPED: False
+  SNAPSHOT_ITERS: 20000
+PRCNN:
+  # baseline: do not use denoising
+  NOISE_REMOVE: False
+  PHRASE: retrain
+  WEAK_DIR: output/svm/cub_weak/vgg16_fast_rcnn_iter_40000_svm

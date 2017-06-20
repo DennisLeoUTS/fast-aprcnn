@@ -1,0 +1,7 @@
+*~
+bkg
+data/*
+experiments/logs/*
+*.pyc
+output/*
+
